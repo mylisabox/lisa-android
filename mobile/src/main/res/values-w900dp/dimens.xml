@@ -1,0 +1,4 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="home_content_left_margin">@dimen/left_menu_width</dimen>
+</resources>

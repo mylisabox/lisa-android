@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="@dimen/padding_normal">
+
+        <com.jrummyapps.android.colorpicker.ColorPickerView
+            android:id="@id/cpv_color_picker_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cpv_alphaChannelVisible="true"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/cpv_item_size"
+            android:layout_alignLeft="@id/cpv_color_picker_view"
+            android:layout_alignRight="@id/cpv_color_picker_view"
+            android:layout_below="@id/cpv_color_picker_view"
+            android:layout_marginTop="@dimen/space_normal"
+            android:orientation="horizontal">
+
+            <com.jrummyapps.android.colorpicker.ColorPanelView
+                android:id="@id/cpv_color_panel_old"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                app:cpv_borderColor="@color/colorBackground"
+                app:cpv_colorShape="square"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/space_small"
+                android:layout_marginRight="@dimen/space_small"
+                android:gravity="center"
+                android:text="→"
+                android:textSize="@dimen/font_big"/>
+
+            <com.jrummyapps.android.colorpicker.ColorPanelView
+                android:id="@id/cpv_color_panel_new"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                app:cpv_colorShape="square"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonbar"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/cancelButton"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@android:string/cancel"/>
+
+        <Button
+            android:id="@+id/okButton"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@android:string/ok"/>
+    </LinearLayout>
+</LinearLayout>

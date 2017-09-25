@@ -1,0 +1,72 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    dataBinding {
+        enabled = true
+    }
+
+    defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+
+        applicationId "com.mylisabox.lisa"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+kapt {
+    generateStubs = true
+}
+dependencies {
+    kapt "com.android.databinding:compiler:$androidPlugin"
+    kapt "com.google.dagger:dagger-compiler:$dagger"
+    kapt "com.github.bumptech.glide:compiler:$glide"
+    wearApp project(path: ':wear')
+    implementation 'com.caverock:androidsvg:1.2.1'
+    implementation "com.android.support.constraint:constraint-layout:$constraintLayout"
+    implementation "com.android.support:support-v4:$androidSupport"
+    implementation project(path: ':common')
+    implementation project(path: ':network')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.jrummyapps:colorpicker:2.1.6'
+    implementation "com.google.dagger:dagger:$dagger"
+    implementation "com.akaita.java:rxjava2-debug:$rxDebug"
+    implementation "com.arasthel:spannedgridlayoutmanager:$spanGridLayoutMananger"
+    implementation "android.arch.lifecycle:extensions:$androidArch"
+    implementation "com.android.support:recyclerview-v7:$androidSupport"
+    implementation "com.google.code.gson:gson:$gson"
+    implementation "com.jakewharton.timber:timber:$timber"
+    implementation "com.android.support:cardview-v7:$androidSupport"
+    implementation "com.android.support:design:$androidSupport"
+    implementation "com.android.support:appcompat-v7:$androidSupport"
+    implementation "com.android.support:support-v4:$androidSupport"
+    implementation "com.android.support:design:$androidSupport"
+    implementation "com.android.support:support-annotations:$androidSupport"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit"
+    implementation "io.reactivex.rxjava2:rxkotlin:$rxKotlin"
+    implementation "io.reactivex.rxjava2:rxjava:$rxJava"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroid"
+    implementation "com.github.bumptech.glide:glide:$glide"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
+    implementation "com.google.android.gms:play-services-wearable:$playServicesWearable"
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation "com.nhaarman:mockito-kotlin-kt1.1:$mockito"
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+}

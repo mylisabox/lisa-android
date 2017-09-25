@@ -1,0 +1,62 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    dataBinding {
+        enabled = true
+    }
+
+    defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+
+        applicationId "com.mylisabox.lisa"
+        minSdkVersion 25
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    kapt "com.android.databinding:compiler:$androidPlugin"
+    kapt "com.google.dagger:dagger-compiler:$dagger"
+    implementation project(':common')
+    implementation project(path: ':network')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "com.google.dagger:dagger:$dagger"
+    implementation "com.google.code.gson:gson:$gson"
+    implementation "org.jraf:android-wear-color-picker:$wearColorPicker"
+    implementation "com.jakewharton.timber:timber:$timber"
+    implementation "com.akaita.java:rxjava2-debug:$rxDebug"
+    implementation "android.arch.lifecycle:extensions:$androidArch"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
+    implementation "com.android.support:wear:$androidSupport"
+    implementation "com.android.support:support-annotations:$androidSupport"
+    implementation "com.android.support:appcompat-v7:$androidSupport"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit"
+    implementation "io.reactivex.rxjava2:rxkotlin:$rxKotlin"
+    implementation "io.reactivex.rxjava2:rxjava:$rxJava"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroid"
+    implementation "com.github.bumptech.glide:glide:$glide"
+    implementation "com.google.android.gms:play-services-wearable:$playServicesWearable"
+    implementation "com.android.support:percent:$androidSupport"
+    implementation "com.android.support:support-v4:$androidSupport"
+    implementation "com.android.support:recyclerview-v7:$androidSupport"
+    implementation 'com.google.android.support:wearable:2.1.0'
+    compileOnly 'com.google.android.wearable:wearable:2.1.0'
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation "com.nhaarman:mockito-kotlin-kt1.1:$mockito"
+
+}

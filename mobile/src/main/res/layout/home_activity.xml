@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="viewModel"
+            type="com.mylisabox.lisa.home.MainMenuViewModel"/>
+
+    </data>
+
+    <com.mylisabox.lisa.ui.TabletDrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- The main content view -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/home_content_left_margin"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/toolbar"/>
+
+            <FrameLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/toolbar"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="@dimen/padding_normal"
+                android:layout_marginEnd="@dimen/padding_normal"
+                android:onClick="goToSpeech"
+                android:src="@drawable/ic_mic_black_24dp"
+                android:tint="@color/colorBackground"
+                app:elevation="@dimen/cardview_default_elevation"/>
+        </RelativeLayout>
+
+        <!-- The navigation drawer -->
+        <android.support.design.widget.NavigationView
+            android:id="@+id/left_menu"
+            android:layout_width="@dimen/left_menu_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true">
+
+            <include
+                layout="@layout/left_menu"
+                app:viewModel="@{viewModel}"/>
+        </android.support.design.widget.NavigationView>
+
+    </com.mylisabox.lisa.ui.TabletDrawerLayout>
+</layout>

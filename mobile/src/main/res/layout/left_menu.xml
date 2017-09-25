@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.widget.Switch"/>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="viewModel"
+            type="com.mylisabox.lisa.home.MainMenuViewModel"/>
+    </data>
+
+    <LinearLayout
+        android:id="@+id/left_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/left_menu_profile_height"
+            android:background="@color/colorAccent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/bg_login"/>
+
+            <ImageView
+                android:id="@+id/profile_picture"
+                android:layout_width="@dimen/profile_image_size"
+                android:layout_height="@dimen/profile_image_size"
+                android:layout_centerInParent="true"
+                app:roundedImage="@{viewModel.user.avatar}"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/profile_picture"
+                android:layout_centerHorizontal="true"
+                android:paddingTop="@dimen/space_small"
+                android:text="@{viewModel.userName}"
+                android:textColor="@android:color/white"
+                tools:text="Jimmy"/>
+        </RelativeLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            app:onRefreshListener="@{() -> viewModel.onRefresh()}"
+            app:refreshing="@{viewModel.isLoading}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <ScrollView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@drawable/divider"
+                android:orientation="vertical"
+                android:showDividers="middle">
+
+                <TextView
+                    style="@style/Menu"
+                    android:layout_width="match_parent"
+                    android:drawableStart="@drawable/ic_favorite_24dp"
+                    android:onClick="@{view -> viewModel.goToFavorites()}"
+                    android:text="@string/menu_favorites"/>
+
+                <TextView
+                    style="@style/Menu"
+                    android:layout_width="match_parent"
+                    android:drawableEnd="@{viewModel.isRoomsOpen ? @drawable/ic_keyboard_arrow_down_24dp : @drawable/ic_chevron_right_24dp}"
+                    android:drawableStart="@drawable/ic_home_24dp"
+                    android:onClick="@{() -> viewModel.toggleRooms()}"
+                    android:text="@string/menu_rooms"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@drawable/divider"
+                    android:orientation="vertical"
+                    android:showDividers="middle"
+                    android:visibility="gone"
+                    app:targetHeight="@{viewModel.roomListHeight}"
+                    app:toggle="@{viewModel.isRoomsOpen}"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@drawable/divider"
+                        android:orientation="vertical"
+                        android:showDividers="middle"
+                        android:visibility="@{viewModel.roomListHeight - 1 == 0 ? View.GONE : View.VISIBLE}"
+                        app:onItemClick="@{viewModel.onRoomListener}"
+                        app:rooms="@{viewModel.rooms}">
+
+                    </LinearLayout>
+
+                    <EditText
+                        style="@style/Menu"
+                        android:layout_width="match_parent"
+                        android:drawableEnd="@drawable/ic_add_24dp"
+                        android:drawableTint="@android:color/darker_gray"
+                        android:hint="@string/menu_add_room"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPersonName"
+                        android:paddingLeft="@dimen/padding_big"
+                        android:text="@={viewModel.newRoomName}"
+                        app:onRoomCreate="@{viewModel.onRoomListener}"/>
+
+                </LinearLayout>
+
+                <TextView
+                    style="@style/Menu"
+                    android:layout_width="match_parent"
+                    android:drawableStart="@drawable/ic_tune_24dp"
+                    android:onClick="@{view -> viewModel.goToNewDevices()}"
+                    android:text="@string/menu_new_devices"/>
+
+                <TextView
+                    style="@style/Menu"
+                    android:layout_width="match_parent"
+                    android:drawableStart="@drawable/ic_settings_24dp"
+                    android:onClick="@{view -> viewModel.goToSettings()}"
+                    android:text="@string/menu_settings"/>
+
+                <TextView
+                    style="@style/Menu"
+                    android:layout_width="match_parent"
+                    android:drawableStart="@drawable/ic_power_24dp"
+                    android:onClick="@{() -> viewModel.logout()}"
+                    android:text="@string/menu_logout"/>
+
+                <Switch
+                    style="@style/Menu"
+                    android:layout_width="match_parent"
+                    android:checked="@={viewModel.isNightTheme}"
+                    android:drawableStart="@drawable/ic_night_24dp"
+                    android:text="@string/menu_dark_theme"/>
+            </LinearLayout>
+        </ScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
+</layout>

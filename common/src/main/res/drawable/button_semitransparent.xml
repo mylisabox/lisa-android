@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+        android:color="?android:attr/colorControlHighlight">
+    <item>
+        <selector>
+            <item
+                android:drawable="@color/semitransparent_dark"
+                android:state_enabled="false"/>
+            <item
+                android:drawable="@color/semitransparent_dark"
+                android:state_pressed="true"/>
+            <item
+                android:drawable="@color/colorAccent"
+                android:state_checked="true"/>
+
+            <item android:drawable="@color/semitransparent"/>
+        </selector>
+    </item>
+</ripple>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="viewModel"
+            type="com.mylisabox.lisa.home.HomeViewModel"/>
+    </data>
+
+    <android.support.wear.widget.BoxInsetLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/dark_grey"
+        android:padding="@dimen/box_inset_layout_padding"
+        tools:context="com.mylisabox.lisa.home.HomeActivity"
+        tools:deviceIds="wear">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            bind:onRefreshListener="@{() -> viewModel.onRefresh()}"
+            bind:refreshing="@{viewModel.isLoading}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.wear.widget.WearableRecyclerView
+                android:id="@+id/recyclerView"
+                android:visibility="@{viewModel.menu.isEmpty() ? View.GONE: View.VISIBLE}"
+                bind:items="@{viewModel.menu}"
+                bind:itemLayout="@{@layout/menu_item}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent">
+
+            </android.support.wear.widget.WearableRecyclerView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </android.support.wear.widget.BoxInsetLayout>
+</layout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="space_smaller">4dp</dimen>
+    <dimen name="space_small">8dp</dimen>
+    <dimen name="space_normal">16dp</dimen>
+    <dimen name="space_big">20dp</dimen>
+
+    <dimen name="font_big">22sp</dimen>
+    <dimen name="font_subhead">16sp</dimen>
+    <dimen name="font_body">14sp</dimen>
+    <dimen name="font_input">21sp</dimen>
+
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_normal">16dp</dimen>
+    <dimen name="padding_big">42dp</dimen>
+</resources>
