@@ -18,8 +18,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     testOptions {
@@ -32,12 +32,14 @@ kapt {
 }
 
 dependencies {
-    kapt "com.android.databinding:compiler:$androidPlugin"
     kapt "com.google.dagger:dagger-compiler:$dagger"
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "com.google.dagger:dagger:$dagger"
+    //kapt "com.google.dagger:dagger-android-processor:$daggerAndroid"
+    //implementation "com.google.dagger:dagger-android-support:$daggerAndroid"
+    api "com.facebook.stetho:stetho-okhttp3:$stetho"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "com.akaita.java:rxjava2-debug:$rxDebug"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion"
     implementation "com.android.support:support-annotations:$androidSupport"
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"

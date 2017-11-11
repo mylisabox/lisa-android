@@ -66,6 +66,7 @@
                     android:background="@null"
                     android:padding="@dimen/space_small"
                     bind:device="@{data}"
+                    android:visibility="@{data.id > 1000 ? View.GONE : View.VISIBLE}"
                     bind:widgetHandler="@{widgetHandler}"
                     android:src="@drawable/ic_favorite_24dp"
                     android:tint="@drawable/ic_color_selector"/>

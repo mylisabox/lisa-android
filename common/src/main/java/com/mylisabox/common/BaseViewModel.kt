@@ -5,8 +5,13 @@ import android.support.annotation.CallSuper
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseViewModel : ViewModel() {
-    protected var subscriptions: CompositeDisposable? = null
+    protected lateinit var subscriptions: CompositeDisposable
 
+    @CallSuper
+    override fun onCleared() {
+        super.onCleared()
+        subscriptions.dispose()
+    }
     @CallSuper
     open fun bind() {
         unbind()
@@ -15,9 +20,8 @@ abstract class BaseViewModel : ViewModel() {
 
     @CallSuper
     open fun unbind() {
-        subscriptions?.dispose()
-        subscriptions = null
+        if (this::subscriptions.isInitialized) {
+            subscriptions.clear()
+        }
     }
-
-
 }

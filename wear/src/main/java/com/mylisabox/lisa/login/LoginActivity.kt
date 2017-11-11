@@ -8,6 +8,7 @@ import com.mylisabox.lisa.common.BaseActivity
 class LoginActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        redirectIfTokenExpired = false
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 

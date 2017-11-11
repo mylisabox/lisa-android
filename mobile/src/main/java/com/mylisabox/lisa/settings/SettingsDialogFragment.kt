@@ -9,7 +9,7 @@ import android.support.v4.app.Fragment
 import android.text.TextUtils
 import android.view.LayoutInflater
 import com.mylisabox.lisa.R
-import com.mylisabox.lisa.common.BaseActivity
+import com.mylisabox.lisa.common.MobileBaseActivity
 import com.mylisabox.lisa.dagger.components.FragmentComponent
 import com.mylisabox.lisa.dagger.modules.FragmentModule
 import com.mylisabox.network.preferences.Preferences
@@ -36,7 +36,7 @@ class SettingsDialogFragment : DialogFragment() {
     }
 
     private fun getFragmentComponent(fragment: Fragment): FragmentComponent {
-        return (activity as BaseActivity).activityComponent.plusFragmentComponent(FragmentModule(fragment))
+        return (activity as MobileBaseActivity).activityComponent.plusFragmentComponent(FragmentModule(fragment))
     }
 
 

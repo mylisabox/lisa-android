@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.Toolbar
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.mylisabox.common.CommonApplication
 import com.mylisabox.common.chatbot.ChatBotRepository
@@ -18,16 +19,15 @@ import com.mylisabox.lisa.LISAApplication
 import com.mylisabox.lisa.R
 import com.mylisabox.lisa.dagger.components.ActivityComponent
 import com.mylisabox.lisa.dagger.modules.ActivityModule
-import com.mylisabox.lisa.device.fragments.FavoritesFragment
 import com.mylisabox.network.preferences.Preferences
 import com.mylisabox.network.utils.RxErrorForwarder
 import com.mylisabox.network.utils.TokenUtils
-import io.reactivex.functions.Consumer
+import io.reactivex.rxkotlin.subscribeBy
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class MobileBaseActivity : AppCompatActivity() {
     companion object {
         val NEED_FADE_ANIMATION = "NEED_FADE_ANIMATION"
         val REQ_CODE_SPEECH_INPUT = 2
@@ -35,18 +35,23 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     lateinit var activityComponent: ActivityComponent
-    @Inject lateinit var tokenUtils: TokenUtils
-    @Inject lateinit var baseNavigator: BaseNavigator
-    @Inject lateinit var appPrefs: Preferences
-    @Inject lateinit var chatBotRepository: ChatBotRepository
-    @Inject lateinit var rxErrorForwarder: RxErrorForwarder
+    @Inject
+    lateinit var tokenUtils: TokenUtils
+    @Inject
+    lateinit var baseNavigator: BaseNavigator
+    @Inject
+    lateinit var appPrefs: Preferences
+    @Inject
+    lateinit var chatBotRepository: ChatBotRepository
+    @Inject
+    lateinit var rxErrorForwarder: RxErrorForwarder
     protected var redirectIfTokenExpired = true
     protected lateinit var toolbar: Toolbar
     private var speechLaunched: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (intent.hasExtra(NEED_FADE_ANIMATION)) {
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
 
         activityComponent = (application as LISAApplication).appComponent.plusActivityComponent(
@@ -61,6 +66,14 @@ abstract class BaseActivity : AppCompatActivity() {
             baseNavigator.goToLogin()
             finish()
         }
+    }
+
+    fun showLoading() {
+        findViewById<ProgressBar>(R.id.progress_spinner).visibility = View.VISIBLE
+    }
+
+    fun hideLoading() {
+        findViewById<ProgressBar>(R.id.progress_spinner).visibility = View.GONE
     }
 
     private fun getActivityModule(): ActivityModule {
@@ -116,10 +129,8 @@ abstract class BaseActivity : AppCompatActivity() {
             }
 
             ft.commitAllowingStateLoss()
-        } else if (findFragmentByTag is FavoritesFragment) {
-            supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         } else if (!findFragmentByTag.isVisible) {
-            supportFragmentManager.popBackStack(tag, 0)
+            supportFragmentManager.popBackStack(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
     }
 
@@ -128,13 +139,13 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
-            BaseActivity.REQ_CODE_SPEECH_INPUT -> {
+            MobileBaseActivity.REQ_CODE_SPEECH_INPUT -> {
                 speechLaunched = false
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                     chatBotRepository.interact(result[0])
                             .compose(rxErrorForwarder::catchExceptions)
-                            .subscribe(Consumer {
+                            .subscribeBy(onError = Timber::e, onSuccess = {
                                 Timber.d(it.toString())
                                 baseNavigator.showToast(it.response)
                             })
@@ -154,7 +165,7 @@ abstract class BaseActivity : AppCompatActivity() {
                     getString(R.string.speech_prompt))
             try {
                 speechLaunched = true
-                startActivityForResult(intent, BaseActivity.REQ_CODE_SPEECH_INPUT)
+                startActivityForResult(intent, MobileBaseActivity.REQ_CODE_SPEECH_INPUT)
             } catch (a: ActivityNotFoundException) {
                 speechLaunched = false
                 Toast.makeText(applicationContext,

@@ -72,7 +72,7 @@ class ToggleImageButton : android.support.v7.widget.AppCompatImageView, Checkabl
         return drawableState
     }
 
-    fun setOnCheckedChangeListener(onCheckedChangeListener: OnCheckedChangeListener) {
+    fun setOnCheckedChangeListener(onCheckedChangeListener: OnCheckedChangeListener?) {
         this.onCheckedChangeListener = onCheckedChangeListener
     }
 

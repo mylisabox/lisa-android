@@ -6,5 +6,5 @@
 /captures
 .externalNativeBuild
 /.idea/
-/keystore/keystore
+/keystore/*keystore
 /mobile/release/

@@ -5,7 +5,7 @@ import android.content.Context
 import com.mylisabox.common.dagger.ViewModelFactory
 import com.mylisabox.common.device.BaseTemplateBuilderVisitor
 import com.mylisabox.common.utils.DimensionUtils
-import com.mylisabox.lisa.common.BaseActivity
+import com.mylisabox.lisa.common.MobileBaseActivity
 import com.mylisabox.lisa.common.TemplateMobileViewBuilder
 import com.mylisabox.lisa.home.MainMenuViewModel
 import com.mylisabox.lisa.login.LoginViewModel
@@ -15,7 +15,7 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class ActivityModule(private val activity: BaseActivity) {
+class ActivityModule(private val activity: MobileBaseActivity) {
 
     @Provides
     @ForActivity
@@ -31,7 +31,7 @@ class ActivityModule(private val activity: BaseActivity) {
 
     @Provides
     @ForActivity
-    fun provideActivity(): BaseActivity {
+    fun provideActivity(): MobileBaseActivity {
         return activity
     }
 
@@ -42,6 +42,7 @@ class ActivityModule(private val activity: BaseActivity) {
     }
 
     @Provides
+    @ForActivity
     fun provideBaseTemplateBuilderVisitor(context: Context, baseUrlProvider: BaseUrlProvider, dimensionUtils: DimensionUtils): BaseTemplateBuilderVisitor {
         return TemplateMobileViewBuilder(context, baseUrlProvider, dimensionUtils)
     }

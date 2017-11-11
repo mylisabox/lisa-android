@@ -3,7 +3,7 @@ package com.mylisabox.network.utils
 import com.mylisabox.network.R
 import com.mylisabox.network.exceptions.NoEndPointException
 import com.nhaarman.mockito_kotlin.mock
-import junit.framework.Assert.assertEquals
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

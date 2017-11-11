@@ -8,7 +8,7 @@ import io.reactivex.Single
 
 abstract class DeviceRepository(protected val deviceApi: DeviceApi) : DeviceProvider {
     fun saveWidgetValue(widgetEvent: WidgetEvent<*>): Single<Device> {
-        if (widgetEvent.device.id > 5000) {
+        if (widgetEvent.device.id > 1000) {
             return deviceApi.postGroupValue(widgetEvent.device.roomId, widgetEvent.device.type, DeviceValue(widgetEvent.key, widgetEvent.value!!))
                     .andThen(Single.just(widgetEvent.device))
         }

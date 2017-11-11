@@ -7,19 +7,16 @@ import com.google.gson.Gson
 import com.mylisabox.common.CommonApplication.Companion.KEY_DATA
 import com.mylisabox.common.room.RoomRepository
 import com.mylisabox.lisa.LISAApplication
-import com.mylisabox.lisa.network.devices.DeviceApi
+import com.mylisabox.network.devices.models.WidgetEvent
 import javax.inject.Inject
 
 class WearDeviceDataReceiver : BroadcastReceiver() {
-    var isInjected = false
+    private var isInjected = false
     @Inject
     lateinit var deviceRepository: RoomRepository
 
     @Inject
     lateinit var gson: Gson
-
-    @Inject
-    lateinit var deviceApi: DeviceApi
 
     override fun onReceive(context: Context, intent: Intent) {
         if (!isInjected) {
@@ -28,7 +25,7 @@ class WearDeviceDataReceiver : BroadcastReceiver() {
             app.appComponent.inject(this)
         }
         val data = intent.getStringExtra(KEY_DATA)
-        //val event = gson.fromJson(data, DeviceValueInfos::class.java)
-        //deviceApi?.sendDeviceValue(event)
+        val event = gson.fromJson(data, WidgetEvent::class.java)
+        deviceRepository.saveWidgetValue(event).subscribe()
     }
 }

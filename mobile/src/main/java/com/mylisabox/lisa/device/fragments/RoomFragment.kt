@@ -1,6 +1,8 @@
 package com.mylisabox.lisa.device.fragments
 
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import com.mylisabox.common.dagger.ViewModelFactory
 import com.mylisabox.lisa.device.viewmodels.RoomViewModel
 import javax.inject.Inject
 
@@ -26,7 +28,7 @@ class RoomFragment : DevicesFragment() {
     }
 
     @Inject
-    lateinit var roomViewModel: RoomViewModel
+    lateinit var viewModelFactory: ViewModelFactory
 
     override fun onStart() {
         super.onStart()
@@ -35,7 +37,10 @@ class RoomFragment : DevicesFragment() {
 
     override fun inject() {
         getFragmentComponent(this).inject(this)
-        roomViewModel.roomId = arguments?.getLong(ROOM_ID) ?: 0
+        val roomId = arguments?.getLong(ROOM_ID) ?: 0
+        val roomViewModel = ViewModelProviders.of(activity!!, viewModelFactory).get("room$roomId", RoomViewModel::class.java)
+        roomViewModel.roomId = roomId
+        roomViewModel.roomName = arguments?.getString(ROOM_NAME) ?: ""
         vModel = roomViewModel
         super.inject()
     }

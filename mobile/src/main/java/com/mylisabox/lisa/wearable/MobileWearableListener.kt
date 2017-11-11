@@ -13,11 +13,13 @@ import com.mylisabox.common.CommonApplication.Companion.WEAR_SPEECH_PATH
 import com.mylisabox.lisa.wearable.receivers.WearDeviceDataReceiver
 import com.mylisabox.lisa.wearable.receivers.WearLoadDataReceiver
 import com.mylisabox.lisa.wearable.receivers.WearSpeechDataReceiver
+import timber.log.Timber
 
 
 class MobileWearableListener : WearableListenerService() {
     override fun onMessageReceived(messageEvent: MessageEvent) {
         super.onMessageReceived(messageEvent)
+        Timber.e("WEAR message: " + messageEvent.path + " " + messageEvent.sourceNodeId)
         when {
             WEAR_LOAD_PATH == messageEvent.path -> {
                 val intent = Intent(applicationContext, WearLoadDataReceiver::class.java)

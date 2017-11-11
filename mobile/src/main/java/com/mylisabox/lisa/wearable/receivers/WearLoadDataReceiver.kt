@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 
 class WearLoadDataReceiver : BroadcastReceiver() {
-    var isInjected = false
+    private var isInjected = false
     @Inject
     lateinit var wearable: Wearable
     @Inject

@@ -135,6 +135,14 @@ abstract class BaseTemplateBuilderVisitor(protected val context: Context,
         val imageButton = AppCompatImageView(context)
         imageButton.tag = component.name
         imageButton.layoutParams = lastLayoutParams
+        imageButton.setOnClickListener { _ ->
+            var key = component.infos!!["text"] as String
+            if (component.value == null) {
+                key = component.name!!
+                component.value = component.infos!!["value"] as String
+            }
+            component.onChange.onNext(WidgetEvent(component.device.get()!!, key, component.value!!))
+        }
         return Template(imageButton)
     }
 
@@ -142,15 +150,20 @@ abstract class BaseTemplateBuilderVisitor(protected val context: Context,
         val frameLayout = FrameLayout(context)
         frameLayout.layoutParams = lastLayoutParams
 
+        val onChildrenChange = ArrayList<Observable<WidgetEvent<Any>>>()
         for (child in component.children) {
             val childParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             layoutParams.add(childParams)
             frameLayout.addView(child.buildView(this).view)
             layoutParams.remove(childParams)
+            onChildrenChange.add(child.onChange)
         }
+        component.childrenSubscription = Observable.merge(onChildrenChange).subscribeBy(
+                onNext = { component.onChange.onNext(it) },
+                onError = { Timber.e(it) }
+        )
         return Template(frameLayout)
     }
-
 
     override fun build(component: Camera): Template {
         val view = IpCameraView(context, baseUrlProvider)
@@ -159,15 +172,15 @@ abstract class BaseTemplateBuilderVisitor(protected val context: Context,
         return Template(view)
     }
 
-
     override fun build(component: Button): Template {
         val button = android.widget.Button(context)
         button.layoutParams = lastLayoutParams
         button.tag = component.name
         button.setOnClickListener { _ ->
-            val key = component.infos!!["text"] as String
+            var key = component.infos!!["text"] as String
             if (component.value == null) {
-                component.value = ""
+                key = component.name!!
+                component.value = component.infos!!["value"] as? String
             }
             component.onChange.onNext(WidgetEvent(component.device.get()!!, key, component.value!!))
         }

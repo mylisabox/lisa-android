@@ -10,17 +10,20 @@ import com.mylisabox.common.user.UserRepository
 import com.mylisabox.network.preferences.Preferences
 import com.mylisabox.network.room.models.Room
 import com.mylisabox.network.user.models.User
+import com.mylisabox.network.utils.BaseUrlProvider
 import com.mylisabox.network.utils.RxErrorForwarder
 import io.reactivex.rxkotlin.subscribeBy
 import timber.log.Timber
 import javax.inject.Inject
 
 class MainMenuViewModel @Inject constructor(private val appPrefs: Preferences,
+                                            private val baseUrlProvider: BaseUrlProvider,
                                             private val userRepository: UserRepository,
                                             private val roomRepository: RoomRepository,
                                             private val mainMenuNavigator: MainMenuNavigator,
                                             private val rxErrorForwarder: RxErrorForwarder) : BaseViewModel() {
 
+    val avatar: ObservableField<String> = ObservableField()
     val user: ObservableField<User> = ObservableField()
     val rooms: ObservableList<Room> = ObservableArrayList()
     val isNightTheme: ObservableBoolean = ObservableBoolean()
@@ -35,10 +38,19 @@ class MainMenuViewModel @Inject constructor(private val appPrefs: Preferences,
     init {
         user.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(p0: Observable?, p1: Int) {
-                userName.set(if (TextUtils.isEmpty(user.get().firstName)) user.get().email else user.get().firstName)
+                userName.set(if (TextUtils.isEmpty(user.get()!!.firstName)) user.get()!!.email else user.get()!!.firstName)
+                var avatarUrl = user.get()!!.avatar
+                if (avatarUrl != null && avatarUrl.startsWith("/")) {
+                    avatarUrl = baseUrlProvider.getBaseUrl() + avatarUrl
+                }
+                avatar.set(avatarUrl)
             }
 
         })
+    }
+
+    fun goToProfile() {
+        mainMenuNavigator.goToProfile()
     }
 
     fun goToFavorites() {
@@ -86,6 +98,15 @@ class MainMenuViewModel @Inject constructor(private val appPrefs: Preferences,
         if (rooms.isEmpty()) {
             retrieveRooms()
         }
+        getUserProfile()
+    }
+
+    private fun getUserProfile() {
+        subscriptions?.add(userRepository.getProfile()
+                .compose(rxErrorForwarder::catchExceptions)
+                .subscribeBy(onError = Timber::e, onSuccess = {
+                    user.set(it)
+                }))
     }
 
     private fun retrieveRooms() {

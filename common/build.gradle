@@ -7,8 +7,16 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    lintOptions {
+        abortOnError false
+    }
+
     dataBinding {
         enabled = true
+    }
+
+    packagingOptions {
+        exclude 'protobuf.meta'
     }
 
     defaultConfig {
@@ -16,7 +24,7 @@ android {
         buildConfigField "String", "WEBCAM_STREAM_BASE_PATH", '"/api/v1/camera/stream?token=%s&url=%s"'
 
         vectorDrawables.useSupportLibrary = true
-
+        multiDexEnabled true
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -28,8 +36,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -39,15 +47,20 @@ kapt {
 }
 
 dependencies {
-    kapt "com.android.databinding:compiler:$androidPlugin"
+    implementation "com.jaumard:rxwearbridge:$rxwearbridge"
     kapt "com.google.dagger:dagger-compiler:$dagger"
     implementation "com.akaita.java:rxjava2-debug:$rxDebug"
+    implementation "androidx.core:core-ktx:$androidKtx"
+    implementation "com.facebook.stetho:stetho:$stetho"
+    implementation "org.jetbrains.anko:anko:$anko"
+    implementation "com.jaumard:recyclerviewbinding:$recyclerViewBinding"
+
     implementation project(":network")
     implementation "com.arasthel:spannedgridlayoutmanager:$spanGridLayoutMananger"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "android.arch.lifecycle:extensions:$androidArch"
     implementation "com.android.support:recyclerview-v7:$androidSupport"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     implementation "com.google.dagger:dagger:$dagger"
     implementation "com.google.code.gson:gson:$gson"
     implementation "com.jakewharton.timber:timber:$timber"

@@ -13,4 +13,9 @@ abstract class BaseGroup : BaseElement() {
             child.associateDevice(device)
         }
     }
+
+    override fun reset() {
+        super.reset()
+        children.forEach { it.reset() }
+    }
 }

@@ -9,11 +9,18 @@ import android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_DRAG
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import com.arasthel.spannedgridlayoutmanager.SpannedGridLayoutManager
 import com.mylisabox.common.device.ui.DevicesBindableAdapter
 import com.mylisabox.lisa.R
 import com.mylisabox.lisa.common.BaseFragment
+import com.mylisabox.lisa.common.TemplateMobileViewBuilder
 import com.mylisabox.lisa.databinding.DevicesFragmentBinding
 import com.mylisabox.lisa.device.viewmodels.DeviceViewModel
+import com.mylisabox.lisa.device.viewmodels.adapters.DevicesBindingAdapter
+import com.mylisabox.lisa.ui.SpaceItemDecorator
+import javax.inject.Inject
+
 
 /**
  * Created by jaumard on 07.12.16.
@@ -24,6 +31,9 @@ abstract class DevicesFragment : BaseFragment<DeviceViewModel>() {
     private lateinit var touchHelper: ItemTouchHelper
 
     lateinit var vModel: DeviceViewModel
+    @Inject
+    lateinit var templateMobileViewBuilder: TemplateMobileViewBuilder
+    private lateinit var binding: DevicesFragmentBinding
 
     override fun getViewModel(): DeviceViewModel {
         return vModel
@@ -35,16 +45,12 @@ abstract class DevicesFragment : BaseFragment<DeviceViewModel>() {
         return inflater.inflate(R.layout.devices_fragment, container, false)
     }
 
-    @CallSuper
-    override fun inject() {
-        getFragmentComponent(this).inject(this)
-        val binding = DataBindingUtil.bind<DevicesFragmentBinding>(this.view)
-        binding.viewModel = vModel
+    private fun initBindings() {
 
         val callback = object : ItemTouchHelper.Callback() {
             override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
                 val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-                return ItemTouchHelper.Callback.makeMovementFlags(dragFlags, 0)
+                return if (vModel.isDragEnabled) ItemTouchHelper.Callback.makeMovementFlags(dragFlags, 0) else 0
             }
 
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
@@ -70,7 +76,7 @@ abstract class DevicesFragment : BaseFragment<DeviceViewModel>() {
             override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder?) {
                 super.clearView(recyclerView, viewHolder)
                 val adapter = recyclerView.adapter as DevicesBindableAdapter
-                vModel.saveWidgetOrder(adapter.getItems())
+                vModel.saveWidgetOrder(adapter.items)
             }
 
             override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
@@ -82,17 +88,32 @@ abstract class DevicesFragment : BaseFragment<DeviceViewModel>() {
                 }
             }
         }
-
         touchHelper = ItemTouchHelper(callback)
         touchHelper.attachToRecyclerView(binding.recyclerView)
+
+        //Delay creation of layout manager to have recycler view rendered before the size calculation
+        val spannedGridLayoutManager = SpannedGridLayoutManager(orientation = SpannedGridLayoutManager.Orientation.VERTICAL,
+                spans = DevicesBindingAdapter.getSpanSizeFromScreenWidth(binding.recyclerView.context, binding.recyclerView))
+        binding.recyclerView.addItemDecoration(SpaceItemDecorator(left = 15, top = 15, right = 15, bottom = 15))
+        binding.recyclerView.layoutManager = spannedGridLayoutManager
     }
 
-/*
-    fun onWidgetsOrderChanged(roomId: String, ids: List<String>) {
+    override fun bind() {}
 
+    @CallSuper
+    override fun inject() {
+        getFragmentComponent(this).inject(this)
+        binding = DataBindingUtil.bind(this.view!!)!!
+        vModel.templateMobileViewBuilder = templateMobileViewBuilder
+        binding.viewModel = vModel
+
+        view!!.viewTreeObserver.addOnGlobalLayoutListener(
+                object : ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+                        view!!.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        initBindings()
+                        vModel.bind()
+                    }
+                })
     }
-
-    fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
-        touchHelper!!.startDrag(viewHolder)
-    }*/
 }

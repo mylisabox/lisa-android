@@ -31,6 +31,31 @@
             </intent-filter>
         </activity>
 
+        <receiver
+            android:name=".wearable.receivers.WearLoadDataReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="load"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".wearable.receivers.WearSpeechDataReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="speech"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".wearable.receivers.WearDeviceDataReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="device"/>
+            </intent-filter>
+        </receiver>
+
         <service
             android:name=".wearable.MobileWearableListener"
             android:enabled="true"
@@ -45,8 +70,13 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".settings.SettingsActivity">
+        <activity
+            android:name=".profile.ProfileActivity"
+            android:label="@string/title_profile">
         </activity>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
     </application>
 
 </manifest>

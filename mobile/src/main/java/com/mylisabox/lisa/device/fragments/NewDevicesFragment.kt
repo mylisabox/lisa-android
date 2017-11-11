@@ -1,5 +1,7 @@
 package com.mylisabox.lisa.device.fragments
 
+import android.arch.lifecycle.ViewModelProviders
+import com.mylisabox.common.dagger.ViewModelFactory
 import com.mylisabox.lisa.R
 import com.mylisabox.lisa.device.viewmodels.NewDeviceViewModel
 import javax.inject.Inject
@@ -17,7 +19,7 @@ class NewDevicesFragment : DevicesFragment() {
     }
 
     @Inject
-    lateinit var newDeviceModel: NewDeviceViewModel
+    lateinit var viewModelFactory: ViewModelFactory
 
     override fun onStart() {
         super.onStart()
@@ -26,7 +28,8 @@ class NewDevicesFragment : DevicesFragment() {
 
     override fun inject() {
         getFragmentComponent(this).inject(this)
-        vModel = newDeviceModel
+        vModel = ViewModelProviders.of(activity!!, viewModelFactory).get(NewDeviceViewModel::class.java)
+        vModel.isDragEnabled = false
         super.inject()
     }
 }

@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">L.I.S.A. Network</string>
     <string name="error_unauthorized">Your sessions has expired, please login</string>
     <string name="error_generic_ws">An error occurred, please try again later</string>
     <string name="error_no_endpoint">Impossible to find L.I.S.A. instance on the network</string>

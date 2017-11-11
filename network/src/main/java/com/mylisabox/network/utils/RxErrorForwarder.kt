@@ -6,7 +6,10 @@ import android.widget.Toast
 import com.mylisabox.network.R
 import com.mylisabox.network.dagger.annotations.ActivityScope
 import com.mylisabox.network.dagger.annotations.Qualifiers.ForActivity
-import io.reactivex.*
+import io.reactivex.Completable
+import io.reactivex.Maybe
+import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -15,7 +18,7 @@ import javax.inject.Inject
 @ActivityScope
 class RxErrorForwarder @Inject constructor(@ForActivity private val context: Context,
                                            private val loginNavigation: LoginNavigation,
-                                           private val exceptionMapper: ErrorExceptionMapper) {
+                                           private val exceptionMapper: ExceptionMapper) {
     companion object {
         val UNAUTHORIZED = "HTTP 401 Unauthorized"
     }
@@ -26,15 +29,6 @@ class RxErrorForwarder @Inject constructor(@ForActivity private val context: Con
 
     fun toast(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-    }
-
-    fun <T> catchExceptions(@StringRes id: Int): SingleTransformer<T, T> {
-        return SingleTransformer { observable ->
-            observable.doOnError({ throwable ->
-                Timber.w(throwable)
-                toast(id)
-            })
-        }
     }
 
     fun <T> catchExceptions(observable: Observable<T>): Observable<T> {

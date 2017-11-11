@@ -9,7 +9,7 @@ import com.mylisabox.lisa.LISAApplication
 import javax.inject.Inject
 
 class WearSpeechDataReceiver : BroadcastReceiver() {
-    var isInjected = false
+    private var isInjected = false
     @Inject
     lateinit var chatBotRepository: ChatBotRepository
 

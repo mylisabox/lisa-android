@@ -1,8 +1,10 @@
 package com.mylisabox.lisa.home
 
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 
+@Ignore
 class MainMenuNavigatorTest {
     @Before
     fun setUp() {

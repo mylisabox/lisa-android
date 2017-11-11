@@ -3,14 +3,17 @@ package com.mylisabox.network.utils
 import com.google.gson.Gson
 import com.mylisabox.network.user.models.Token
 import com.mylisabox.network.user.models.User
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertFalse
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.eq
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.whenever
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
-import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
 import org.mockito.quality.Strictness
@@ -29,7 +32,7 @@ class TokenUtilsTest {
 
     @Mock private lateinit var gson: Gson
     @Mock private lateinit var base64Wrapper: Base64Wrapper
-    lateinit var tokenUtils: TokenUtils
+    private lateinit var tokenUtils: TokenUtils
 
     @Before
     fun setUp() {
@@ -37,25 +40,47 @@ class TokenUtilsTest {
     }
 
     @Test
-    fun isTokenExpired() {
-        val token = mock(Token::class.java)
-        `when`(base64Wrapper.decode(anyString(), eq(0))).thenReturn(TOKEN_PART2)
+    fun isTokenExpiredFalse() {
+        val token = Token(0, System.currentTimeMillis() / 1000 + 500)
+
+        whenever(base64Wrapper.decode(anyString(), eq(0))).thenReturn(TOKEN_PART2)
         given(gson.fromJson<Token>(eq(TOKEN_PART2), any())).willReturn(token)
-        `when`(token.exp).thenReturn(System.currentTimeMillis() - 500)
         val tokenExpired = tokenUtils.isTokenExpired("$TOKEN_PART1.$TOKEN_PART2.$TOKEN_PART3")
 
         assertFalse(tokenExpired)
     }
 
     @Test
-    fun getUserFromToken() {
-        val user = mock(User::class.java)
-        val token = mock(Token::class.java)
-        `when`(token.user).thenReturn(user)
-        `when`(base64Wrapper.decode(anyString(), eq(0))).thenReturn(TOKEN_PART2)
+    fun isTokenExpiredTrue() {
+        val token = Token(0, System.currentTimeMillis() / 1000 - 10000)
+        whenever(base64Wrapper.decode(anyString(), eq(0))).thenReturn(TOKEN_PART2)
+        given(gson.fromJson<Token>(eq(TOKEN_PART2), any())).willReturn(token)
+        val tokenExpired = tokenUtils.isTokenExpired("$TOKEN_PART1.$TOKEN_PART2.$TOKEN_PART3")
+
+        assertTrue(tokenExpired)
+    }
+
+    @Test
+    fun isTokenExpiredBadToken() {
+        val tokenExpired = tokenUtils.isTokenExpired(BAD_TOKEN)
+        assertTrue(tokenExpired)
+    }
+
+    @Test
+    fun getUserFromGoodToken() {
+        val user = mock<User>()
+        val token = mock<Token>()
+        whenever(token.user).thenReturn(user)
+        whenever(base64Wrapper.decode(anyString(), eq(0))).thenReturn(TOKEN_PART2)
         given(gson.fromJson<Token>(eq(TOKEN_PART2), any())).willReturn(token)
         val userFromToken = tokenUtils.getUserFromToken("$TOKEN_PART1.$TOKEN_PART2.$TOKEN_PART3")
         assertEquals(user, userFromToken)
+    }
+
+    @Test
+    fun getUserFromBadToken() {
+        val userFromToken = tokenUtils.getUserFromToken(BAD_TOKEN)
+        assertNull(userFromToken)
     }
 
 }

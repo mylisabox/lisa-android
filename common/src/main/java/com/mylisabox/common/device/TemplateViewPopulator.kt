@@ -40,7 +40,7 @@ class TemplateViewPopulator @Inject constructor(private var imagesProvider: Imag
     override fun populateComponent(component: Slider) {
         val key = component.infos!![Slider.KEY] as String
         val value = component.device.get()!!.data[key]
-        val text: Double? = (value as? String)?.toDouble() ?: value as Double
+        val text: Double? = (value as? String)?.toDouble() ?: value as? Double ?: 0.0
 
         val slider = component.template!!.findViewByName<SeekBar>(component.name!!)
         slider.progress = text?.toInt() ?: 0
@@ -108,7 +108,7 @@ class TemplateViewPopulator @Inject constructor(private var imagesProvider: Imag
                 }
             }
             if (text == null) {
-                text = ""
+                text = component.infos!!["value"] as? String
             }
         }
         button.text = text ?: key

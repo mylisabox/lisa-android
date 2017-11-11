@@ -29,4 +29,8 @@ abstract class BaseElement : TemplateBuilder, TemplatePopulator, Serializable {
 
     @Transient
     val onChange: PublishSubject<WidgetEvent<Any>> = PublishSubject.create()
+
+    open fun reset() {
+        template = null
+    }
 }

@@ -13,40 +13,38 @@
 
     </data>
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:enabled="@{!viewModel.isDragging}"
-        bind:onRefreshListener="@{() -> viewModel.onRefresh()}"
-        bind:refreshing="@{viewModel.isLoading}">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical">
+            android:text="@string/no_device"
+            android:visibility="@{viewModel.devices.isEmpty() ? View.VISIBLE: View.GONE}"
+            tools:text="No devices"/>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:enabled="@{!viewModel.isDragging}"
+            bind:onRefreshListener="@{() -> viewModel.onRefresh()}"
+            bind:refreshing="@{viewModel.isLoading}">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:visibility="@{viewModel.devices.isEmpty() ? View.GONE: View.VISIBLE}"
+                bind:builder="@{viewModel.builder}"
                 bind:devices="@{viewModel.devices}"
                 bind:itemLayout="@{@layout/device_item}"
-                bind:builder="@{viewModel.builder}"
                 bind:populator="@{viewModel.populator}"
-                bind:widgetHandler="@{viewModel}"
-                tools:visibility="gone">
+                bind:widgetHandler="@{viewModel}"/>
 
-            </android.support.v7.widget.RecyclerView>
+        </android.support.v4.widget.SwipeRefreshLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/no_device"
-                android:visibility="@{viewModel.devices.isEmpty() ? View.VISIBLE: View.GONE}"
-                tools:text="No devices"/>
-        </LinearLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </RelativeLayout>
 </layout>

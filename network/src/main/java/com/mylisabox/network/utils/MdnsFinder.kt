@@ -99,13 +99,14 @@ class MdnsFinder @Inject constructor(@ForApplication private val appContext: Con
     fun searchLISAService(): Single<String> {
         return Single.create({ subscriber ->
             if (Build.FINGERPRINT != null && Build.FINGERPRINT.toLowerCase().contains("generic")) {
-                subscriber.onSuccess("/10.0.2.2:3000")
+                subscriber.onSuccess("http://10.0.2.2:3000")
             } else if (networkUtils.isWifiActivated(appContext)) {
                 onLISAFoundListener = object : OnLISAFoundListener {
                     override fun onLISAFound(serviceInfo: NsdServiceInfo) {
                         handler.removeCallbacks(runnable)
-                        if (!subscriber.isDisposed)
-                            subscriber.onSuccess("${serviceInfo.host}:${serviceInfo.port}")
+                        if (!subscriber.isDisposed) {
+                            subscriber.onSuccess("http:/${serviceInfo.host}:${serviceInfo.port}")
+                        }
                         stop()
                     }
 

@@ -41,14 +41,14 @@ class LoginViewModel @Inject constructor(private val userRepository: UserReposit
     private fun isFormValid(): Boolean {
         var isValid = true
 
-        if (email.get().isEmpty() || email.get().isBlank()) {
+        if (email.get()!!.isEmpty() || email.get()!!.isBlank()) {
             emailError.set(R.string.error_field_required)
             isValid = false
         } else if (!EMAIL_ADDRESS.matcher(email.get()).matches()) {
             emailError.set(R.string.error_field_email)
             isValid = false
         }
-        if (password.get().isEmpty() || password.get().isBlank()) {
+        if (password.get()!!.isEmpty() || password.get()!!.isBlank()) {
             passwordError.set(R.string.error_field_required)
             isValid = false
         }
@@ -56,7 +56,7 @@ class LoginViewModel @Inject constructor(private val userRepository: UserReposit
     }
 
     fun login() {
-        val credential = Credential(email.get(), password.get())
+        val credential = Credential(email.get()!!, password.get()!!)
         if (isFormValid()) {
             loginNavigator.showLoading()
             val action = if (isRegistrationMode.get()) userRepository.create(credential) else userRepository.retrieve(credential)
@@ -65,7 +65,7 @@ class LoginViewModel @Inject constructor(private val userRepository: UserReposit
                     .subscribeBy(onSuccess = {
                         loginNavigator.hideLoading()
                         loginNavigator.goToHome()
-                        preferences.setAndApply(CommonApplication.KEY_EMAIL, email.get())
+                        preferences.setAndApply(CommonApplication.KEY_EMAIL, email.get()!!)
                     }, onError = {
                         Timber.e(it)
                         loginNavigator.hideLoading()

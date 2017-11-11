@@ -1,8 +1,10 @@
 package com.mylisabox.common.utils
 
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 
+@Ignore
 class AppPreferencesTest {
     @Before
     fun setUp() {

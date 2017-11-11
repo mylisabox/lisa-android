@@ -24,7 +24,6 @@ class LISAApplication : CommonApplication() {
                 .networkModule(networkModule)
                 .build()
         appComponent.inject(this)
-
     }
 
     override fun goToLogin() {

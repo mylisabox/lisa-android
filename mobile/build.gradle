@@ -10,6 +10,10 @@ android {
         enabled = true
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
 
@@ -24,26 +28,33 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 }
 kapt {
     generateStubs = true
 }
 dependencies {
-    kapt "com.android.databinding:compiler:$androidPlugin"
     kapt "com.google.dagger:dagger-compiler:$dagger"
+    //kapt "com.google.dagger:dagger-android-processor:$daggerAndroid"
+    implementation "com.google.dagger:dagger:$dagger"
+    //implementation "com.google.dagger:dagger-android-support:$daggerAndroid"
+
     kapt "com.github.bumptech.glide:compiler:$glide"
-    wearApp project(path: ':wear')
+    implementation "com.jaumard:recyclerviewbinding:$recyclerViewBinding"
+    //wearApp project(path: ':wear')
     implementation 'com.caverock:androidsvg:1.2.1'
     implementation "com.android.support.constraint:constraint-layout:$constraintLayout"
     implementation "com.android.support:support-v4:$androidSupport"
+    implementation "androidx.core:core-ktx:$androidKtx"
     implementation project(path: ':common')
     implementation project(path: ':network')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.jrummyapps:colorpicker:2.1.6'
-    implementation "com.google.dagger:dagger:$dagger"
     implementation "com.akaita.java:rxjava2-debug:$rxDebug"
     implementation "com.arasthel:spannedgridlayoutmanager:$spanGridLayoutMananger"
     implementation "android.arch.lifecycle:extensions:$androidArch"
@@ -61,7 +72,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rxJava"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroid"
     implementation "com.github.bumptech.glide:glide:$glide"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     implementation "com.google.android.gms:play-services-wearable:$playServicesWearable"
 
     testImplementation 'junit:junit:4.12'

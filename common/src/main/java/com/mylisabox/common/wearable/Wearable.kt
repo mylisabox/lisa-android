@@ -52,17 +52,19 @@ class Wearable @Inject constructor(@ForApplication context: Context, private val
     fun sendData(uri: String, data: DataMap): Completable {
         return connect()
                 .andThen(Completable.create({
-                    val putDataMapRequest = PutDataMapRequest.create("/$uri")
+                    val putDataMapRequest = PutDataMapRequest.create(uri)
                     putDataMapRequest.dataMap.putAll(data)
                     val dataRequest = putDataMapRequest.asPutDataRequest()
                     dataRequest.setUrgent()
                     val pendingResult: PendingResult<DataApi.DataItemResult> = Wearable.DataApi.putDataItem(googleClient, dataRequest)
+                    val completableEmitter = it
                     pendingResult.setResultCallback {
-                        if (!it.status.isSuccess) {
-                            throw RuntimeException(it.status.statusMessage)
+                        if (it.status.isSuccess) {
+                            completableEmitter.onComplete()
+                        } else {
+                            Completable.error(RuntimeException("Can't send the message: ${it.status.statusMessage}"))
                         }
                     }
-                    pendingResult.await()
                 })).subscribeOn(Schedulers.io())
     }
 
@@ -113,10 +115,15 @@ class Wearable @Inject constructor(@ForApplication context: Context, private val
     fun sendMessage(path: String, message: String): Completable {
         return connect().andThen(Completable.defer({
             val nodesResult = Wearable.NodeApi.getConnectedNodes(googleClient).await()
-            nodesResult.nodes.map { Wearable.MessageApi.sendMessage(googleClient, it.id, path, message.toByteArray()).await() }
+            val messageResult = Wearable.MessageApi.sendMessage(googleClient, nodesResult.nodes[0].id, path, message.toByteArray()).await()
+            if (messageResult.status.isSuccess) {
+                Completable.complete()
+            } else {
+                Completable.error(RuntimeException("Can't send the message: ${messageResult.status.statusMessage}"))
+            }
+            /*nodesResult.nodes.map { Wearable.MessageApi.sendMessage(googleClient, it.id, path, message.toByteArray()).await() }
                     .filterNot { it.status.isSuccess }
-                    .forEach { throw RuntimeException("Can't send the message") }
-            Completable.complete()
+                    .forEach { throw RuntimeException("Can't send the message") }*/
         })).subscribeOn(Schedulers.io())
     }
 

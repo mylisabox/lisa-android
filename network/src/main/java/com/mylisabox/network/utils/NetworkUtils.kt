@@ -11,12 +11,12 @@ class NetworkUtils @Inject constructor() {
     }
 
     fun isWifiActivated(context: Context): Boolean {
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val ni: NetworkInfo? = cm.activeNetworkInfo
-        var br = false
-        if (ni != null) {
-            br = ni.isConnected && (ni.type == ConnectivityManager.TYPE_WIFI || ni.type == TYPE_PROXY)
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
+        var isWifi = false
+        if (networkInfo != null) {
+            isWifi = networkInfo.isConnected && (networkInfo.type == ConnectivityManager.TYPE_WIFI || networkInfo.type == TYPE_PROXY)
         }
-        return br
+        return isWifi
     }
 }

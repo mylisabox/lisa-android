@@ -5,7 +5,7 @@ import android.view.Window
 import android.view.WindowManager
 import com.mylisabox.common.backend.ServerRepository
 import com.mylisabox.lisa.R
-import com.mylisabox.lisa.common.BaseActivity
+import com.mylisabox.lisa.common.MobileBaseActivity
 import com.mylisabox.network.dagger.annotations.ActivityScope
 import com.mylisabox.network.utils.RxErrorForwarder
 import io.reactivex.rxkotlin.subscribeBy
@@ -16,7 +16,7 @@ import javax.inject.Inject
  * status bar and navigation/system bar) with user interaction.
  */
 @ActivityScope
-class SplashScreenActivity : BaseActivity() {
+class SplashScreenActivity : MobileBaseActivity() {
     @Inject lateinit var splashScreenNavigator: SplashScreenNavigator
     @Inject lateinit var serverRepository: ServerRepository
     @Inject lateinit var rxErrorHandler: RxErrorForwarder

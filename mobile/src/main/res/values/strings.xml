@@ -26,4 +26,13 @@
     <string name="field_external_url">URL for remote access to L.I.S.A.</string>
     <string name="button_save">Save</string>
     <string name="no_device">No device to show</string>
+    <string name="field_firstname">First name</string>
+    <string name="field_lastname">Last name</string>
+    <string name="field_vpassword">Password confirmation</string>
+    <string name="field_phone">Phone</string>
+    <string name="title_profile">My profile</string>
+    <string name="error_password_dont_match">Passwords don\'t match</string>
+    <string name="error_field_phone">The phone is in a wrong format</string>
+    <string name="pick_avatar">Please select your avatar</string>
+    <string name="error_password_lenght">Password should be at least 8 characters long</string>
 </resources>

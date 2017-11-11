@@ -23,13 +23,12 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
-    kapt "com.android.databinding:compiler:$androidPlugin"
     kapt "com.google.dagger:dagger-compiler:$dagger"
     implementation project(':common')
     implementation project(path: ':network')
@@ -40,7 +39,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$timber"
     implementation "com.akaita.java:rxjava2-debug:$rxDebug"
     implementation "android.arch.lifecycle:extensions:$androidArch"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion"
     implementation "com.android.support:wear:$androidSupport"
     implementation "com.android.support:support-annotations:$androidSupport"
     implementation "com.android.support:appcompat-v7:$androidSupport"

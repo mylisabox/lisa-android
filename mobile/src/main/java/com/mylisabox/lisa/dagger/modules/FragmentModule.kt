@@ -4,7 +4,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.support.v4.app.Fragment
 import com.mylisabox.common.dagger.ViewModelFactory
-import com.mylisabox.lisa.common.BaseActivity
+import com.mylisabox.lisa.common.MobileBaseActivity
 import com.mylisabox.lisa.home.MainMenuViewModel
 import com.mylisabox.lisa.login.LoginViewModel
 import com.mylisabox.network.dagger.annotations.Qualifiers.ForFragment
@@ -33,7 +33,7 @@ class FragmentModule(private val fragment: Fragment) {
 
     @Provides
     @ForFragment
-    fun provideActivity(): BaseActivity {
-        return fragment.activity as BaseActivity
+    fun provideActivity(): MobileBaseActivity {
+        return fragment.activity as MobileBaseActivity
     }
 }

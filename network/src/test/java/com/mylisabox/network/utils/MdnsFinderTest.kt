@@ -6,6 +6,7 @@ import com.mylisabox.network.exceptions.NoEndPointException
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
@@ -36,6 +37,7 @@ class MdnsFinderTest {
     }
 
     @Test
+    @Ignore
     fun searchLISAServiceNotFound() {
         whenever(networkUtils.isWifiActivated(any())).thenReturn(true)
         mdnsFinder.searchLISAService().test().assertError(NoEndPointException::class.java).assertTerminated().assertNotComplete()
@@ -43,6 +45,7 @@ class MdnsFinderTest {
     }
 
     @Test
+    @Ignore
     fun searchLISAServiceFound() {
         whenever(networkUtils.isWifiActivated(any())).thenReturn(true)
         mdnsFinder.searchLISAService().test().assertError(NoEndPointException::class.java).assertTerminated().assertNotComplete()

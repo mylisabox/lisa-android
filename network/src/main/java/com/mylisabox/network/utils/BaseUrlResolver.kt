@@ -8,13 +8,13 @@ import javax.inject.Inject
 class BaseUrlResolver @Inject constructor(private val mdnsFinder: MdnsFinder, private val preferencesProvider: PreferencesProvider) {
     fun getBaseUrl(): Single<String> {
         return mdnsFinder.searchLISAService()
-                .flatMap({ hostPort -> Single.just("http:/" + hostPort) })
+                .flatMap({ hostPort -> Single.just(hostPort) })
                 .onErrorResumeNext({ thowable ->
                     val externalUrl: String? = preferencesProvider.getPreferences().get(Preferences.KEY_EXTERNAL_URL)
                     if (externalUrl == null) {
                         return@onErrorResumeNext mdnsFinder.searchLISAService()
                                 .flatMap({ hostPort ->
-                                    Single.just("http:/" + hostPort)
+                                    Single.just(hostPort)
                                             .onErrorResumeNext { Single.error(thowable) }
                                 })
                     } else {

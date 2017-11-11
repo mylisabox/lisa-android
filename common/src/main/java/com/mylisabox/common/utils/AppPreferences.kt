@@ -8,7 +8,9 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class AppPreferences @Inject constructor(@ForApplication val context: Context) : Preferences {
-    private val preferences: SharedPreferences = context.getSharedPreferences("appPrefs", Context.MODE_PRIVATE)
+    private val preferences: SharedPreferences by lazy {
+        context.getSharedPreferences("appPrefs", Context.MODE_PRIVATE)
+    }
     private lateinit var editor: SharedPreferences.Editor
 
     @Suppress("UNCHECKED_CAST")

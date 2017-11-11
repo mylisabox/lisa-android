@@ -15,7 +15,10 @@ import com.mylisabox.network.devices.models.BaseElement
 import com.mylisabox.network.preferences.PreferencesProvider
 import com.mylisabox.network.room.RoomApi
 import com.mylisabox.network.user.LoginApi
+import com.mylisabox.network.user.UserApi
 import com.mylisabox.network.utils.BaseElementParser
+import com.mylisabox.network.utils.ErrorExceptionMapper
+import com.mylisabox.network.utils.RxErrorForwarder
 import com.mylisabox.network.utils.RxErrorForwarder.LoginNavigation
 import dagger.Module
 import dagger.Provides
@@ -57,6 +60,11 @@ class NetworkModule(private val application: NetworkApplication) {
     }
 
     @Provides
+    fun provideUserApi(networkApiProvider: NetworkApiProvider): UserApi {
+        return networkApiProvider.create(UserApi::class.java)
+    }
+
+    @Provides
     fun provideChatBotApi(networkApiProvider: NetworkApiProvider): ChatBotApi {
         return networkApiProvider.create(ChatBotApi::class.java)
     }
@@ -84,6 +92,11 @@ class NetworkModule(private val application: NetworkApplication) {
     @Provides
     fun provideNsdManager(@ForApplication context: Context): NsdManager {
         return context.getSystemService(Context.NSD_SERVICE) as NsdManager
+    }
+
+    @Provides
+    fun provideExceptionMapper(): RxErrorForwarder.ExceptionMapper {
+        return ErrorExceptionMapper()
     }
 
 }

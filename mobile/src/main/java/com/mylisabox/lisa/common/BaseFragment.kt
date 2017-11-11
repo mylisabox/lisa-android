@@ -11,6 +11,11 @@ import com.mylisabox.network.dagger.annotations.FragmentScope
 @FragmentScope
 abstract class BaseFragment<out T : BaseViewModel> : Fragment() {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        retainInstance = true
+    }
+
     @CallSuper
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -20,7 +25,7 @@ abstract class BaseFragment<out T : BaseViewModel> : Fragment() {
     protected abstract fun inject()
 
     protected fun getFragmentComponent(fragment: Fragment): FragmentComponent {
-        return (activity as BaseActivity).activityComponent.plusFragmentComponent(FragmentModule(fragment))
+        return (activity as MobileBaseActivity).activityComponent.plusFragmentComponent(FragmentModule(fragment))
     }
 
     protected abstract fun getViewModel(): T?
@@ -40,6 +45,10 @@ abstract class BaseFragment<out T : BaseViewModel> : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        bind()
+    }
+
+    protected open fun bind() {
         getViewModel()?.bind()
     }
 }

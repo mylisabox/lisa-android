@@ -1,5 +1,7 @@
 package com.mylisabox.lisa.device.fragments
 
+import android.arch.lifecycle.ViewModelProviders
+import com.mylisabox.common.dagger.ViewModelFactory
 import com.mylisabox.lisa.R
 import com.mylisabox.lisa.device.viewmodels.FavoriteViewModel
 import javax.inject.Inject
@@ -15,9 +17,8 @@ class FavoritesFragment : DevicesFragment() {
             return FavoritesFragment()
         }
     }
-
     @Inject
-    lateinit var favoriteViewModel: FavoriteViewModel
+    lateinit var viewModelFactory: ViewModelFactory
 
     override fun onStart() {
         super.onStart()
@@ -26,7 +27,9 @@ class FavoritesFragment : DevicesFragment() {
 
     override fun inject() {
         getFragmentComponent(this).inject(this)
-        vModel = favoriteViewModel
+        vModel = ViewModelProviders.of(activity!!, viewModelFactory).get(FavoriteViewModel::class.java)
+        vModel.roomId = 0
+        vModel.roomName = getString(R.string.menu_favorites)
         super.inject()
     }
 }

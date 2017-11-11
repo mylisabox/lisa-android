@@ -21,22 +21,21 @@ open class BaseNavigator @Inject constructor(@ForActivity private val context: C
     private val progressDialogHandler = Handler()
 
     open fun goBack() {
-        if (context is BaseActivity) {
+        if (context is MobileBaseActivity) {
             context.onBackPressed()
         }
     }
 
     override fun goToLogin() {
         context.startActivity(LoginActivity.newInstance(context))
-        if (context is BaseActivity) {
+        if (context is MobileBaseActivity) {
             context.finish()
         }
     }
 
-
     fun goToRegistration() {
         context.startActivity(LoginActivity.newInstance(context, MODE_REGISTER))
-        if (context is BaseActivity) {
+        if (context is MobileBaseActivity) {
             context.finish()
         }
     }

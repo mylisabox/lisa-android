@@ -13,11 +13,7 @@ import javax.net.SocketFactory
 class TagSocketFactory @Inject constructor() : SocketFactory() {
     private val delegate: SocketFactory = SocketFactory.getDefault()
 
-    @Throws(IOException::class)
-    private fun configureSocket(socket: Socket): Socket {
-        TrafficStats.tagSocket(socket)
-        return socket
-    }
+    private val THREAD_ID = 1000
 
     @Throws(IOException::class)
     override fun createSocket(): Socket {
@@ -32,8 +28,7 @@ class TagSocketFactory @Inject constructor() : SocketFactory() {
     }
 
     @Throws(IOException::class)
-    override fun createSocket(host: String, port: Int, localAddress: InetAddress,
-                              localPort: Int): Socket {
+    override fun createSocket(host: String, port: Int, localAddress: InetAddress, localPort: Int): Socket {
         val socket = delegate.createSocket(host, port, localAddress, localPort)
         return configureSocket(socket)
     }
@@ -45,9 +40,14 @@ class TagSocketFactory @Inject constructor() : SocketFactory() {
     }
 
     @Throws(IOException::class)
-    override fun createSocket(host: InetAddress, port: Int, localAddress: InetAddress,
-                              localPort: Int): Socket {
+    override fun createSocket(host: InetAddress, port: Int, localAddress: InetAddress, localPort: Int): Socket {
         val socket = delegate.createSocket(host, port, localAddress, localPort)
         return configureSocket(socket)
+    }
+
+    @Throws(IOException::class)
+    protected fun configureSocket(socket: Socket): Socket {
+        TrafficStats.setThreadStatsTag(THREAD_ID)
+        return socket
     }
 }

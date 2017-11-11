@@ -1,8 +1,10 @@
 package com.mylisabox.lisa.device.viewmodels
 
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 
+@Ignore
 class NewDeviceViewModelTest {
     @Before
     fun setUp() {

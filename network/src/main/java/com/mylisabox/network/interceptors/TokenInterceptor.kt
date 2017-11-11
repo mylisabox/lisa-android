@@ -15,9 +15,7 @@ class TokenInterceptor @Inject constructor(private val preferencesProvider: Pref
         val newRequest: Request
 
         val token: String? = preferencesProvider.getPreferences().get(Preferences.KEY_TOKEN)
-        val newRequestBuilder = request.newBuilder()
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
+        val newRequestBuilder = request.newBuilder().addHeader("Accept", "application/json")
         if (token != null) {
             newRequestBuilder.addHeader("Authorization", "JWT $token")
         }

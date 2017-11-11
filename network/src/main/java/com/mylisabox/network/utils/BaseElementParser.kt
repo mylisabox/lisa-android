@@ -7,7 +7,6 @@ import java.util.HashMap
 import kotlin.collections.ArrayList
 import kotlin.collections.component1
 import kotlin.collections.component2
-import kotlin.collections.mapTo
 
 class BaseElementParser : JsonDeserializer<BaseElement>, JsonSerializer<BaseElement> {
 
@@ -17,7 +16,7 @@ class BaseElementParser : JsonDeserializer<BaseElement>, JsonSerializer<BaseElem
     }
 
     private fun parseElement(jsonElement: JsonElement): BaseElement {
-        var baseElement: BaseElement? = null
+        val baseElement: BaseElement?
         val jsonObject = jsonElement as JsonObject
         if (jsonObject.has("type")) {
             val type = jsonObject.get("type").asString

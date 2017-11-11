@@ -1,6 +1,6 @@
 package com.mylisabox.lisa.dagger.components
 
-import com.mylisabox.lisa.common.BaseActivity
+import com.mylisabox.lisa.common.MobileBaseActivity
 import com.mylisabox.lisa.dagger.modules.ActivityModule
 import com.mylisabox.lisa.dagger.modules.FragmentModule
 import com.mylisabox.lisa.dagger.modules.ViewModelModule
@@ -14,7 +14,7 @@ import dagger.Subcomponent
 @Subcomponent(modules = arrayOf(ActivityModule::class, ViewModelModule::class))
 interface ActivityComponent {
     fun plusFragmentComponent(fragmentModule: FragmentModule): FragmentComponent
-    fun inject(activity: BaseActivity)
+    fun inject(activity: MobileBaseActivity)
     fun inject(activity: LoginActivity)
     fun inject(activity: HomeActivity)
     fun inject(activity: SplashScreenActivity)

@@ -38,10 +38,10 @@ class LoginFragment : BaseFragment<LoginViewModel>() {
 
     override fun inject() {
         getFragmentComponent(this).inject(this)
-        val binding: LoginFragmentBinding = DataBindingUtil.bind(view)
+        val binding: LoginFragmentBinding? = DataBindingUtil.bind(view!!)
         vModel.isRegistrationMode.set(arguments?.get(KEY_MODE) == LoginActivity.MODE_REGISTER)
-        binding.viewModel = vModel
-        binding.executePendingBindings()
+        binding?.viewModel = vModel
+        binding?.executePendingBindings()
     }
 
 }

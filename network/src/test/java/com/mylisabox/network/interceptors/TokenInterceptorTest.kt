@@ -47,9 +47,9 @@ class TokenInterceptorTest {
         tokenInterceptor.intercept(chain)
 
         verify(builder).addHeader(eq("Accept"), eq("application/json"))
-        verify(builder).addHeader(eq("Content-Type"), eq("application/json"))
+        verify(builder, times(0)).addHeader(eq("Content-Type"), eq("application/json"))
         verify(builder).addHeader(eq("Authorization"), eq("JWT token"))
-        verify(builder, times(3)).addHeader(anyString(), anyString())
+        verify(builder, times(2)).addHeader(anyString(), anyString())
     }
 
     @Test
@@ -69,8 +69,8 @@ class TokenInterceptorTest {
         tokenInterceptor.intercept(chain)
 
         verify(builder).addHeader(eq("Accept"), eq("application/json"))
-        verify(builder).addHeader(eq("Content-Type"), eq("application/json"))
-        verify(builder, times(2)).addHeader(anyString(), anyString())
+        verify(builder, times(0)).addHeader(eq("Content-Type"), eq("application/json"))
+        verify(builder, times(1)).addHeader(anyString(), anyString())
     }
 
 }

@@ -1,8 +1,10 @@
 package com.mylisabox.common.device
 
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 
+@Ignore
 class TemplateViewPopulatorTest {
     @Before
     fun setUp() {
