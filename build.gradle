@@ -9,10 +9,10 @@ buildscript {
 
     //Deps
     ext.wearColorPicker = "1.0.1"
-    ext.spanGridLayoutMananger = "2.0.2"
+    ext.spanGridLayoutMananger = "2.0.3"
     ext.gson = "2.8.2"
     ext.dagger = "2.11"
-    ext.rxwearbridge = "1.0.1"
+    ext.rxwearbridge = "1.1.1"
     ext.daggerAndroid = "2.14.1"
     ext.retrofit = "2.3.0"
     ext.okHttp = "3.8.1"
@@ -26,8 +26,8 @@ buildscript {
     ext.recyclerViewBinding = "1.0.4"
     ext.androidSupport = "27.1.1"
     ext.androidArch = "1.1.1"
-    ext.playServicesWearable = "15.0.0"
-    ext.constraintLayout = "1.1.0"
+    ext.playServicesWearable = "15.0.1"
+    ext.constraintLayout = "1.1.2"
     ext.glide = "4.2.0"
     ext.androidPlugin = "3.0.0"
     ext.kotlinVersion = "1.2.41"
@@ -42,7 +42,7 @@ buildscript {
 
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.android.tools.build:gradle:3.1.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
         // NOTE: Do not place your application dependencies here; they belong

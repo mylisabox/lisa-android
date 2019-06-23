@@ -1,1 +1,1 @@
-include ':mobile', ':wear', ':common', ':network', ':watch'
+include ':mobile', ':wear', ':common', ':network'

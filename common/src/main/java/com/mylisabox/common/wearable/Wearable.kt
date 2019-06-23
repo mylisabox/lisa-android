@@ -129,7 +129,6 @@ class Wearable @Inject constructor(@ForApplication context: Context, private val
 
 
     override fun onDataChanged(dataEvent: DataEventBuffer) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         //onWerableData?.onData(dataEvent.)
     }
 

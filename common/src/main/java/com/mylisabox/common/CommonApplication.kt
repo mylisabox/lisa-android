@@ -1,6 +1,5 @@
 package com.mylisabox.common
 
-import android.os.StrictMode
 import com.facebook.stetho.Stetho
 import com.mylisabox.network.BuildConfig
 import com.mylisabox.network.NetworkApplication
@@ -41,7 +40,7 @@ abstract class CommonApplication : NetworkApplication() {
         }
 
         if (BuildConfig.DEBUG) {
-            StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder()
+            /*StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder()
                     .detectAll()
                     .penaltyLog()
                     .penaltyDeath()
@@ -51,7 +50,7 @@ abstract class CommonApplication : NetworkApplication() {
                     .detectAll()
                     .penaltyLog()
                     //.penaltyDeath()
-                    .build())
+                    .build())*/
             Timber.plant(Timber.DebugTree())
 
             bg {

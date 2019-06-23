@@ -32,6 +32,7 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger"
     implementation project(':common')
     implementation project(path: ':network')
+    implementation "com.jaumard:recyclerviewbinding:$recyclerViewBinding"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "com.google.dagger:dagger:$dagger"
     implementation "com.google.code.gson:gson:$gson"
@@ -52,8 +53,8 @@ dependencies {
     implementation "com.android.support:percent:$androidSupport"
     implementation "com.android.support:support-v4:$androidSupport"
     implementation "com.android.support:recyclerview-v7:$androidSupport"
-    implementation 'com.google.android.support:wearable:2.1.0'
-    compileOnly 'com.google.android.wearable:wearable:2.1.0'
+    implementation 'com.google.android.support:wearable:2.3.0'
+    compileOnly 'com.google.android.wearable:wearable:2.3.0'
 
     testImplementation 'junit:junit:4.12'
     testImplementation "com.nhaarman:mockito-kotlin-kt1.1:$mockito"

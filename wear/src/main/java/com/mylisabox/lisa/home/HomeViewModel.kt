@@ -2,8 +2,8 @@ package com.mylisabox.lisa.home
 
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
+import com.jaumard.recyclerviewbinding.BindableRecyclerAdapter
 import com.mylisabox.common.BaseViewModel
-import com.mylisabox.common.ui.list.BindableListAdapter.OnClickListener
 import com.mylisabox.lisa.R
 import com.mylisabox.lisa.room.RoomsWearRepository
 import com.mylisabox.network.room.models.Room
@@ -14,11 +14,11 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(private val roomRepository: RoomsWearRepository,
                                         private val rxErrorForwarder: RxErrorForwarder,
-                                        private val homeNavigator: HomeNavigator) : BaseViewModel(), OnClickListener<MenuItem> {
+                                        private val homeNavigator: HomeNavigator) : BaseViewModel(), BindableRecyclerAdapter.OnClickListener<MenuItem> {
     companion object {
-        val MENU_SPEECH = -1L
-        val MENU_FAVORITES = -2L
-        val MENU_NEW_DEVICES = -3L
+        const val MENU_SPEECH = -1L
+        const val MENU_FAVORITES = -2L
+        const val MENU_NEW_DEVICES = -3L
     }
 
     private val rooms = ArrayList<Room>()
@@ -27,7 +27,7 @@ class HomeViewModel @Inject constructor(private val roomRepository: RoomsWearRep
 
     override fun bind() {
         super.bind()
-        if (menu.get().isEmpty()) {
+        if (menu.get()!!.isEmpty()) {
             onRefresh()
         }
     }
@@ -52,7 +52,7 @@ class HomeViewModel @Inject constructor(private val roomRepository: RoomsWearRep
     fun onRefresh() {
         isLoading.set(true)
 
-        subscriptions?.add(roomRepository.retrieveAll()
+        subscriptions.add(roomRepository.retrieveAll()
                 .compose(rxErrorForwarder::catchExceptions)
                 .subscribeBy(onError = {
                     Timber.e(it)
